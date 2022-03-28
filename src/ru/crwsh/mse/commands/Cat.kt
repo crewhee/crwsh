@@ -1,11 +1,12 @@
 package ru.crwsh.mse.commands
 
 import java.io.File
-import java.io.InputStream
 
 class Cat() : Command {
+    override val type: String
+        get() = "command"
 
-    override fun Execute(args: List<String>, env: Map<String, String>): String? {
+    override fun Execute(args: List<String>, env: Map<String, String>): String {
         val result = StringBuilder()
         val options : MutableSet<Char> = hashSetOf()
         // run without options
@@ -36,7 +37,7 @@ class Cat() : Command {
     }
 
     private fun readFile(fileName: String, options: Set<Char>): StringBuilder {
-        var output = StringBuilder()
+        val output = StringBuilder()
         val inStream = if (fileName == "-") System.`in` else File(fileName).inputStream()
         var lineNumber = 0
         var prevLineIsEmpty = false

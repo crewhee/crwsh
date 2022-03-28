@@ -1,6 +1,9 @@
 package ru.crwsh.mse.commands
 
 class Pwd : Command {
+    override val type: String
+        get() = "command"
+
     override fun Execute(args: List<String>, env: Map<String, String>): String {
         var flag_p = true
         var flag_l = false
