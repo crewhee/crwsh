@@ -1,10 +1,17 @@
 package ru.crwsh.mse.commands
 
-class Wc : Command {
-    override val type: String
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+
+class Wc(override var args: List<String>) : Command {
+    override val name: String
         get() = "command"
 
-    override fun Execute(args: List<String>, env: Map<String, String>): String {
+    override fun execute(
+        env: Map<String, String>,
+        istream: InputStreamReader,
+        ostream: OutputStreamWriter
+    ): Int {
         TODO("Not yet implemented")
     }
 
