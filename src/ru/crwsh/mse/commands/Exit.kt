@@ -1,12 +1,27 @@
 package ru.crwsh.mse.commands
 
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
 import kotlin.system.exitProcess
 
-class Exit : Command {
-    override val type: String
+class Exit(override var args: List<String>) : Command {
+    override val name: String
         get() = "command"
 
-    override fun Execute(args: List<String>, env: Map<String, String>): String {
-        exitProcess(0)
+    @Suppress("UNREACHABLE_CODE")
+    override fun execute(
+        env: Map<String, String>,
+        istream: InputStreamReader,
+        ostream: OutputStreamWriter
+    ): Int {
+        if (args.size > 0) {
+            if (args.size == 1)
+                return exitProcess(args[0].toIntOrNull() ?: 0)
+            else {
+                System.err.println("exit: too many arguments")
+                return 1
+            }
+        }
+        return exitProcess(env["?"]!!.toInt())
     }
 }

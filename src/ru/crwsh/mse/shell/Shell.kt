@@ -1,39 +1,31 @@
 package ru.crwsh.mse.shell
 
-import ru.crwsh.mse.commands.Command
 import ru.crwsh.mse.commands.CommandFactory
-import ru.crwsh.mse.commands.CommandType
-import java.io.PrintStream
-import java.util.Scanner
 import ru.crwsh.mse.parser.Parser
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
 
-class Shell (
-    private var env : MutableMap<String, String> = mutableMapOf(),
-    private val parser : Parser = Parser(),
-    private val input_stream : Scanner = Scanner(System.`in`),
-    private val output_stream : PrintStream = PrintStream(System.out),
-    private var commandGetter : MutableMap<String, Command> = mutableMapOf(),
-    commandFactory: CommandFactory = CommandFactory()
-)  {
+class Shell(
+    private var env: MutableMap<String, String> = mutableMapOf(),
+    private val parser: Parser = Parser(),
+    private val input_stream: InputStreamReader = InputStreamReader(System.`in`),
+    private val output_stream: OutputStreamWriter = OutputStreamWriter(System.out),
+    private val commandFactory: CommandFactory = CommandFactory()
+) {
     init {
         env["PWD"] = "~/"
-        for (k in CommandType.values())
-            commandGetter[commandFactory.getName(k)] = commandFactory.makeCommand(k)
+        env["PATH"] = "/bin/"
+        env["?"] = "0"
     }
 
     fun run() {
         while (true) {
-//            var p_res = parser.Parse(input_stream, env)
-//            var res : String?
-//            if (p_res.commandName in commandGetter) {
-//                res = commandGetter[p_res.commandName]?.Execute(p_res.args, env)
-//
-//                output_stream.println(res)
-//            }
-//            else {
-//                output_stream.println("csh: command not found: " + p_res.commandName)
-//            }
-            output_stream.println("sh >")
+            output_stream.write("sh >")
+            output_stream.flush()
+            val command = parser.Parse(env, commandFactory) ?: continue
+            env["?"] = command.execute(env, input_stream, output_stream).toString()
+            output_stream.write("\n")
+            output_stream.flush()
         }
     }
 }

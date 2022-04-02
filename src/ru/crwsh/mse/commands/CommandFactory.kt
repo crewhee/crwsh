@@ -1,31 +1,14 @@
 package ru.crwsh.mse.commands
 
-enum class CommandType {
-    PWD,
-    CAT,
-    ECHO,
-    WC,
-    EXIT,
-}
-
 class CommandFactory {
-    fun makeCommand(type: CommandType) : Command {
-        return when(type) {
-            CommandType.PWD -> Pwd()
-            CommandType.CAT -> Cat()
-            CommandType.ECHO -> Echo()
-            CommandType.WC -> Wc()
-            CommandType.EXIT -> Exit()
-        }
-    }
-
-    fun getName(type: CommandType) : String {
-        return when(type) {
-            CommandType.PWD -> "pwd"
-            CommandType.CAT -> "cat"
-            CommandType.ECHO -> "echo"
-            CommandType.WC -> "wc"
-            CommandType.EXIT -> "exit"
+    fun getByName(name: String, args: List<String>): Command {
+        return when (name) {
+            "pwd" -> Pwd(args)
+            "cat" -> Cat(args)
+            "echo" -> Echo(args)
+            "wc" -> Wc(args)
+            "exit" -> Exit(args)
+            else -> Executable(listOf(name) + args)
         }
     }
 }

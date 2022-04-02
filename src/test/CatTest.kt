@@ -6,7 +6,7 @@ import ru.crwsh.mse.commands.Cat
 class CatTest {
     @Test
     fun simpleTest() {
-        val a = Cat()
-        println(a.Execute(listOf("-s", "/Users/crewhee/Desktop/учеба/итмо/2/temp/test.txt"), hashMapOf()))
+        val a = Cat(listOf("-s", "/Users/crewhee/Desktop/учеба/итмо/2/temp/test.txt"))
+        println(a.execute(hashMapOf()))
     }
 }

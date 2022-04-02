@@ -1,13 +1,21 @@
 package ru.crwsh.mse.commands
 
-class Echo : Command {
-    override val type: String
-        get() = "command"
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
 
-    override fun Execute(args: List<String>, env: Map<String, String>): String {
+class Echo(override var args: List<String>) : Command {
+    override val name: String
+        get() = "echo"
+
+    override fun execute(
+        env: Map<String, String>,
+        istream: InputStreamReader,
+        ostream: OutputStreamWriter
+    ): Int {
         val result = StringBuilder()
         for (arg in args)
             result.append("$arg ")
-        return result.toString()
+        ostream.write(result.toString())
+        return 0
     }
 }

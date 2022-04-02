@@ -1,14 +1,21 @@
 package ru.crwsh.mse.commands
 
 import java.io.File
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
 
-class Cat() : Command {
-    override val type: String
-        get() = "command"
+class Cat(override var args: List<String>) : Command {
+    override val name: String
+        get() = "cat"
 
-    override fun Execute(args: List<String>, env: Map<String, String>): String {
+    override fun execute(
+        env: Map<String, String>,
+        istream: InputStreamReader,
+        ostream: OutputStreamWriter
+    ): Int {
         val result = StringBuilder()
-        val options : MutableSet<Char> = hashSetOf()
+        val options: MutableSet<Char> = hashSetOf()
+
         // run without options
         if (args.isEmpty())
             result.append(readFile("-", options))
@@ -33,7 +40,9 @@ class Cat() : Command {
         for (fileName in args.drop(optionCount))
             result.append(readFile(fileName, options))
 
-        return result.toString()
+        ostream.write(result.toString())
+
+        return 0
     }
 
     private fun readFile(fileName: String, options: Set<Char>): StringBuilder {
