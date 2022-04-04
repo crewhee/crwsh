@@ -8,6 +8,7 @@ class Parser {
         env: Map<String, String>,
         commandGetter: CommandFactory
     ): Command? {
+        // \'[^\']+\'|(\\\$.*)
         var line = (readLine())?.split(' ')
         if (line == null)
             return null

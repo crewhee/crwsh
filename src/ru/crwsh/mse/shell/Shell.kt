@@ -13,18 +13,17 @@ class Shell(
     private val commandFactory: CommandFactory = CommandFactory()
 ) {
     init {
-        env["PWD"] = "~/"
+        env["PWD"] = System.getProperty("user.dir")
         env["PATH"] = "/bin/"
         env["?"] = "0"
     }
 
     fun run() {
         while (true) {
-            output_stream.write("sh >")
+            output_stream.write("sh :->")
             output_stream.flush()
             val command = parser.Parse(env, commandFactory) ?: continue
             env["?"] = command.execute(env, input_stream, output_stream).toString()
-            output_stream.write("\n")
             output_stream.flush()
         }
     }

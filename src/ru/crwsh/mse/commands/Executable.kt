@@ -11,24 +11,29 @@ class Executable(override var args: List<String>) : Command {
     override fun execute(env: Map<String, String>, istream: InputStreamReader, ostream: OutputStreamWriter): Int {
         if (name.isEmpty())
             return env["?"]!!.toInt()
-        if (env["PATH"] == null) {
-            System.err.println("Empty path")
-            return 1
-        }
         var binPath: String? = null
-        for (path in env["PATH"]!!.split(':')) {
-            for (it in File(path).walk()) {
-                if (it.name == name) {
-                    binPath = path + it.name
-                    break
-                }
+        if (File(name).exists())
+            binPath = name
+        else {
+            if (env["PATH"] == null) {
+                System.err.println("Empty path")
+                return 1
             }
-            if (binPath != null)
-                break
+            for (path in env["PATH"]!!.split(':')) {
+                for (it in File(path).walk()) {
+                    if (it.name == name) {
+                        binPath = path + it.name
+                        break
+                    }
+                }
+                if (binPath != null)
+                    break
+            }
         }
 
         if (binPath == null) {
             System.err.println("crwshell: command not found:  $name")
+            return 1
         }
 
         val process = ProcessBuilder(listOf(binPath) + args.drop(1))
