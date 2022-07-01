@@ -1,7 +1,6 @@
 package ru.crwsh.mse.shell
 
 import java.io.InputStream
-import java.io.InputStreamReader
 import java.io.OutputStream
 import java.io.PipedInputStream
 import java.io.PipedOutputStream
@@ -27,9 +26,5 @@ class ShellFactory {
             result.add(Shell(env.toMutableMap(), istreams.last(), outputStream))
             return result
         }
-    }
-
-    fun getShell() : Shell {
-        return Shell()
     }
 }

@@ -89,9 +89,7 @@ class Shell(
     }
 
     private fun getTokensFromStdIn() : MutableList<CrwshToken> {
-        var line = readLine()
-        if (line.isNullOrBlank())
-            return mutableListOf()
+        var line = readLine()!!
         while (!parser.appendLine(line)) {
             if (!parser.canRecover()) {
                 outputWriter.write("crwsh: parse error\n")
@@ -99,7 +97,7 @@ class Shell(
             }
             outputWriter.write(parser.getStackString() + ">>")
             outputWriter.flush()
-            line = readLine()
+            line = readLine()!!
         }
         return parser.getTokens()
     }
@@ -116,11 +114,6 @@ class Shell(
             System.err.flush()
             outputWriter.flush()
         }
-    }
-
-    fun closeOStream() {
-        if (output_stream != System.out)
-            output_stream.close()
     }
 }
 
