@@ -29,6 +29,7 @@ class ExpansionTest {
         parser.reset()
     }
 
+    @Test
     fun sqouteTest() {
         parser.appendLine("echo 'text \$x'")
         val tokens = parser.getTokens()
@@ -36,6 +37,7 @@ class ExpansionTest {
         parser.reset()
     }
 
+    @Test
     fun dqouteTest() {
         parser.appendLine("echo \"text \$x\"")
         val tokens = parser.getTokens()

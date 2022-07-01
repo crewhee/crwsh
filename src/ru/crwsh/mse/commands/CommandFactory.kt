@@ -1,6 +1,5 @@
 package ru.crwsh.mse.commands
 
-import ru.crwsh.mse.parser.tokens.CrwshToken
 import ru.crwsh.mse.parser.tokens.WordToken
 import java.util.stream.Collectors
 

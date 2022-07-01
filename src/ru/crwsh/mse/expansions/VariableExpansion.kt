@@ -1,6 +1,5 @@
 package ru.crwsh.mse.expansions
 
-import ru.crwsh.mse.parser.tokens.AssignmentToken
 import ru.crwsh.mse.parser.tokens.CrwshToken
 import ru.crwsh.mse.parser.tokens.VariableToken
 import ru.crwsh.mse.parser.tokens.WordToken

@@ -21,10 +21,6 @@ class Parser {
     private var line: String = ""
     private var pos: Int = 0
 
-    fun isAccepted(): Boolean {
-        return stack.isEmpty()
-    }
-
     fun canRecover(): Boolean {
         return canRecover
     }

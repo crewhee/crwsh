@@ -1,6 +1,5 @@
 package test.ru.crwsh.mse.commands
 
-import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import ru.crwsh.mse.parser.Parser
 import ru.crwsh.mse.shell.Shell
