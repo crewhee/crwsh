@@ -1,7 +1,7 @@
 package ru.crwsh.mse.commands
 
-import java.io.InputStreamReader
-import java.io.OutputStreamWriter
+import java.io.InputStream
+import java.io.OutputStream
 import kotlin.system.exitProcess
 
 class Exit(override var args: List<String>) : Command {
@@ -10,9 +10,9 @@ class Exit(override var args: List<String>) : Command {
 
     @Suppress("UNREACHABLE_CODE")
     override fun execute(
-        env: Map<String, String>,
-        istream: InputStreamReader,
-        ostream: OutputStreamWriter
+        env: MutableMap<String, String>,
+        istream: InputStream,
+        ostream: OutputStream
     ): Int {
         if (args.size > 0) {
             if (args.size == 1)

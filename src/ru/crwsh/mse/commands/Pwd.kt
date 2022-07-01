@@ -1,17 +1,20 @@
 package ru.crwsh.mse.commands
 
-import java.io.InputStreamReader
-import java.io.OutputStreamWriter
+import java.io.InputStream
+import java.io.OutputStream
 
 class Pwd(override var args: List<String>) : Command {
     override val name: String
         get() = "pwd"
 
     override fun execute(
-        env: Map<String, String>,
-        istream: InputStreamReader,
-        ostream: OutputStreamWriter
+        env: MutableMap<String, String>,
+        istream: InputStream,
+        ostream: OutputStream
     ): Int {
+        val w = ostream.writer()
+        if (env["PWD"] == null)
+            return 1
         var flag_p = true
         var flag_l = false
         for (arg in args) {
@@ -21,13 +24,12 @@ class Pwd(override var args: List<String>) : Command {
             if (arg == "-L") {
                 flag_l = true
             } else {
-                System.err.println("pwd: bad option: $arg")
+                w.write("pwd: bad option: $arg")
                 return 1
             }
         }
-
-        ostream.write(env["PWD"] ?: return 1)
-
+        w.write(env["PWD"] + "\n")
+        w.flush()
         return 0
     }
 }

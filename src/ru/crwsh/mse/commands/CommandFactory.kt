@@ -1,14 +1,26 @@
 package ru.crwsh.mse.commands
 
+import ru.crwsh.mse.parser.tokens.CrwshToken
+import ru.crwsh.mse.parser.tokens.WordToken
+import java.util.stream.Collectors
+
 class CommandFactory {
-    fun getByName(name: String, args: List<String>): Command {
-        return when (name) {
-            "pwd" -> Pwd(args)
-            "cat" -> Cat(args)
-            "echo" -> Echo(args)
-            "wc" -> Wc(args)
-            "exit" -> Exit(args)
-            else -> Executable(listOf(name) + args)
+    fun getByName(args : List<WordToken>): Command {
+        if (args.isEmpty()) {
+            throw RuntimeException("Empty command, this must never happen")
+        }
+        val strargs : List<String> = args.stream()
+            .map { it -> it.content }
+            .collect(Collectors.toList())
+        return when (strargs[0]) {
+            "pwd" -> Pwd(strargs)
+            "cat" -> Cat(strargs)
+            "echo" -> Echo(strargs)
+            "wc" -> Wc(strargs)
+            "exit" -> Exit(strargs)
+            "env" -> Env(strargs)
+            "cd" -> Cd(strargs)
+            else -> Executable(strargs)
         }
     }
 }
