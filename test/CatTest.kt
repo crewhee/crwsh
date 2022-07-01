@@ -1,6 +1,6 @@
 package test
 
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import ru.crwsh.mse.commands.Cat
 
 class CatTest {
