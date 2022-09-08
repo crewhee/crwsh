@@ -17,7 +17,7 @@ class Pwd(override var args: List<String>) : Command {
             return 1
         var flag_p = true
         var flag_l = false
-        for (arg in args) {
+        for (arg in args.drop(1)) {
             if (arg == "-P") {
                 flag_p = true
             }

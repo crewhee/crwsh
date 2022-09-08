@@ -105,4 +105,11 @@ class ParserTest {
         var tokens = parser.getTokens()
         parser.reset()
     }
+
+    @Test
+    fun braceExpansionTest() {
+        parser.appendLine("echo a{b,c,d}e")
+        var tokens = parser.getTokens()
+        parser.reset()
+    }
 }

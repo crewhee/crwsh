@@ -19,6 +19,7 @@ class CommandFactory {
             "exit" -> Exit(strargs)
             "env" -> Env(strargs)
             "cd" -> Cd(strargs)
+            "ls" -> Ls(strargs)
             else -> Executable(strargs)
         }
     }

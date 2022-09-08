@@ -9,7 +9,7 @@ class ShellFactory {
     companion object {
         fun getPipedShells(
             count: Int,
-            env: MutableMap<String, String>,
+            sh: Shell,
             inputStream: InputStream,
             outputStream: OutputStream
         ): List<Shell> {
@@ -19,12 +19,17 @@ class ShellFactory {
             for (i in 0 until count - 1) {
                 ostreams[i].connect(istreams[i])
             }
-            result.add(Shell(env.toMutableMap(), inputStream, ostreams[0]))
+            result.add(Shell(sh.publicEnv.toMutableMap(), inputStream, ostreams[0]))
             for (i in 0 until count - 2) {
-                result.add(Shell(env.toMutableMap(), istreams[i], ostreams[i + 1]))
+                result.add(Shell(sh.publicEnv.toMutableMap(), istreams[i], ostreams[i + 1]))
             }
-            result.add(Shell(env.toMutableMap(), istreams.last(), outputStream))
+            sh.inputReader = istreams.last().reader()
+            result.add(sh)
             return result
+        }
+
+        fun getSingleShell(env: MutableMap<String, String>, outputStream: OutputStream) : Shell {
+            return Shell(env.toMutableMap(), outputStream = outputStream)
         }
     }
 }

@@ -5,13 +5,6 @@ import ru.crwsh.mse.parser.tokens.WordToken
 import java.util.*
 
 class ParserStack : Stack<CrwshToken>() {
-//    enum class ParserState(val s: String) {
-//        SINGLE_QUOTE("quote"), DOUBLE_QUOTE("dquote"), COMMAND_SUBST("cmdsubst"), BQUOTE("bquote"), ARITH_SUBST("arithsubst"), LINE_BREAK(
-//            ""
-//        ), PIPELINE("pipe"), CMD_AND("cmdand"), CMD_OR("cmdor"), WORD("word")
-//    }
-
-//    private val stack =  Stack<CrwshToken>()
 
     fun getStackString(): String {
         val tempStringBuilder = StringBuilder()
