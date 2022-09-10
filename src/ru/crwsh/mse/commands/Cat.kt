@@ -1,10 +1,6 @@
 package ru.crwsh.mse.commands
 
-import java.io.BufferedReader
-import java.io.File
-import java.io.FileNotFoundException
-import java.io.InputStream
-import java.io.OutputStream
+import java.io.*
 
 
 class Cat(override var args: List<String>) : Command {
@@ -62,7 +58,7 @@ class Cat(override var args: List<String>) : Command {
                             options
                         )
                     )
-                } catch (e : FileNotFoundException) {
+                } catch (e: FileNotFoundException) {
                     result.append("cat: $filename: No such file or directory\n")
                 }
         }

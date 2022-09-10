@@ -28,7 +28,7 @@ class ShellFactory {
             return result
         }
 
-        fun getSingleShell(env: MutableMap<String, String>, outputStream: OutputStream) : Shell {
+        fun getSingleShell(env: MutableMap<String, String>, outputStream: OutputStream): Shell {
             return Shell(env.toMutableMap(), outputStream = outputStream)
         }
     }

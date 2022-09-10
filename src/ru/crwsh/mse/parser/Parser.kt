@@ -49,41 +49,33 @@ class Parser {
     private fun endCurrentWord() {
         if (sb.isEmpty()) return
         if (stack.isNotEmpty()) {
-            var pt : CrwshToken? = null
+            var pt: CrwshToken? = null
             if (stack.peek() is PipeToken || stack.peek() is RedirToken) {
                 pt = stack.pop()
             }
             if (stack.isNotEmpty()) {
                 stack.peek().children.add(WordToken(sb.toString()))
                 if (stack.peek() is VariableToken
-                    // || stack.peek() is CmdSubstToken
+                // || stack.peek() is CmdSubstToken
                 ) {
                     pt?.let { stack.peek().children.add(it) }
                     attachToken()
                 }
-            }
-            else {
-                pt?. let { output.add(it) }
+            } else {
+                pt?.let { output.add(it) }
                 output.add(WordToken(sb.toString()))
             }
-        }
-        else {
+        } else {
             output.add(WordToken(sb.toString()))
         }
         sb.clear()
     }
 
-//    private fun putCurrentWordToStack() {
-//        stack.push(WordToken(""))
-//        endCurrentWord()
-//    }
-
     private fun attachToken() {
         if (stack.size > 1) {
             val tok = stack.pop()
             stack.peek().children.add(tok)
-        }
-        else {
+        } else {
             throw RuntimeException("Must never happen")
         }
     }
@@ -96,16 +88,13 @@ class Parser {
 
         if (pos + 1 < line.length) {
             if (line[pos + 1].isLetter()) {
-                if (stack.isNotEmpty() && stack.peek() is VariableToken)
-                    endCurrentWord()
-                if (stack.isEmpty() || stack.peek() !is WordToken)
-                    stack.push(WordToken(""))
+                if (stack.isNotEmpty() && stack.peek() is VariableToken) endCurrentWord()
+                if (stack.isEmpty() || stack.peek() !is WordToken) stack.push(WordToken(""))
                 // do wordtoken with var inside
                 endCurrentWord()
                 stack.push(VariableToken())
             } else if (line[pos + 1] == '(') {
-                if (stack.isEmpty() || stack.peek() !is WordToken)
-                    stack.push(WordToken(""))
+                if (stack.isEmpty() || stack.peek() !is WordToken) stack.push(WordToken(""))
                 endCurrentWord()
                 stack.push(CmdSubstToken())
                 pos++
@@ -135,8 +124,7 @@ class Parser {
                 '"' -> stack.push(DQuoteToken())
                 '|' -> {
                     endCurrentWord()
-                    if ((output.isEmpty() || output.last() is PipeToken) && stack.isEmpty())
-                        canRecover = false
+                    if ((output.isEmpty() || output.last() is PipeToken) && stack.isEmpty()) canRecover = false
                     stack.add(PipeToken())
                 }
                 '>' -> {
@@ -207,7 +195,8 @@ class Parser {
                             }
                         }
                         '|' -> {
-                            if ((output.isEmpty() || output.last() is PipeToken) && stack.all({it !is WordToken}))  canRecover = false
+                            if ((output.isEmpty() || output.last() is PipeToken) && stack.all { it !is WordToken }) canRecover =
+                                false
                             stack.add(PipeToken())
                         }
                         '>' -> {
@@ -217,10 +206,8 @@ class Parser {
                             if (stack.peek() is CmdSubstToken) {
                                 endCurrentWord()
                                 val tok = stack.pop()
-                                if (stack.isNotEmpty() && stack.peek() is WordToken)
-                                    stack.peek().children.add(tok)
-                                else
-                                    finalizeToken()
+                                if (stack.isNotEmpty() && stack.peek() is WordToken) stack.peek().children.add(tok)
+                                else finalizeToken()
                             } else appendToWord(line[pos])
                         }
                         else -> appendToWord(line[pos])
@@ -234,9 +221,8 @@ class Parser {
 
     fun appendLine(inLine: String?): Boolean {
         if (stack.isNotEmpty()) {
-            if (stack.peek() is NLToken)
-                stack.pop()
-            else if (stack.peek() is SQuoteToken || stack.peek() is DQuoteToken){
+            if (stack.peek() is NLToken) stack.pop()
+            else if (stack.peek() is SQuoteToken || stack.peek() is DQuoteToken) {
                 appendToWord('\n')
             }
         }
@@ -248,14 +234,10 @@ class Parser {
         }
         if (sb.isNotEmpty() || stack.isNotEmpty() && (stack.peek() is VariableToken || stack.peek() is WordToken)) {
             endCurrentWord()
-            if (stack.isNotEmpty() && stack.peek() is WordToken)
-                finalizeToken()
+            if (stack.isNotEmpty() && stack.peek() is WordToken) finalizeToken()
         }
         if (output.isNotEmpty() && output[0] is AssignmentToken) {
-            if (output.size != 1
-                    || output[0].children.size != 2
-                    || output[0].children[0] !is WordToken
-                    || output[0].children[1] !is WordToken) {
+            if (output.size != 1 || output[0].children.size != 2 || output[0].children[0] !is WordToken || output[0].children[1] !is WordToken) {
                 canRecover = false
                 return false
             }
@@ -271,9 +253,9 @@ class Parser {
 
     fun getCommandList(pipeline: List<CrwshToken>): List<List<CrwshToken>> {
         var i = 0
-        val cmdList : MutableList<List<CrwshToken>> = mutableListOf()
+        val cmdList: MutableList<List<CrwshToken>> = mutableListOf()
         while (i < pipeline.size) {
-            val tmpCmd : MutableList<CrwshToken> = mutableListOf()
+            val tmpCmd: MutableList<CrwshToken> = mutableListOf()
             while (i < pipeline.size) {
                 if (pipeline[i] is WordToken) {
                     tmpCmd.add(pipeline[i])
@@ -282,13 +264,11 @@ class Parser {
                         cmdList.add(tmpCmd)
                         break
                     }
-                }
-                else if (pipeline[i] is PipeToken) {
+                } else if (pipeline[i] is PipeToken) {
                     cmdList.add(tmpCmd)
                     i++
                     break
-                }
-                else {
+                } else {
                     throw RuntimeException("pipe parse error")
                 }
             }

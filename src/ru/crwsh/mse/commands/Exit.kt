@@ -8,20 +8,18 @@ class Exit(override var args: List<String>) : Command {
     override val name: String
         get() = "command"
 
-    @Suppress("UNREACHABLE_CODE")
     override fun execute(
-        env: MutableMap<String, String>,
-        istream: InputStream,
-        ostream: OutputStream
+        env: MutableMap<String, String>, istream: InputStream, ostream: OutputStream
     ): Int {
-        if (args.size > 0) {
-            if (args.size == 1)
-                return exitProcess(args[0].toIntOrNull() ?: 0)
+        val writer = ostream.bufferedWriter()
+        if (args.isNotEmpty()) {
+            if (args.size == 1) exitProcess(args[0].toIntOrNull() ?: 0)
             else {
-                System.err.println("exit: too many arguments")
+                writer.write("exit: too many arguments")
+                writer.flush()
                 return 1
             }
         }
-        return exitProcess(env["?"]!!.toInt())
+        exitProcess(env["?"]!!.toInt())
     }
 }

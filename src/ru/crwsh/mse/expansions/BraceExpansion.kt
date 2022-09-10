@@ -5,6 +5,13 @@ import ru.crwsh.mse.parser.tokens.CrwshToken
 
 class BraceExpansion(val stack: ParserStack) : Expansion {
     override fun expand(tokens: MutableList<CrwshToken>) {
-        TODO("Not yet implemented")
+        TODO()
+        var flag = true
+        while (flag) {
+            flag = false
+            tokens.forEach {
+
+            }
+        }
     }
 }

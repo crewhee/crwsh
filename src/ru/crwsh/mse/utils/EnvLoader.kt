@@ -6,7 +6,7 @@ class EnvLoader {
             "SHELL" to "crwsh",
             "PWD" to System.getProperty("user.dir"),
             "OLDPWD" to System.getProperty("user.dir"),
-            "PATH" to "/bin/",
+            "PATH" to "/usr/bin/",
             "?" to "0",
             "HOME_DIR" to System.getProperty("user.home")
         )

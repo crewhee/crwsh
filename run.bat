@@ -1,0 +1,1 @@
+gradlew.bat fatJar > nul && java -jar build/libs/uber-crwsh-1.0-SNAPSHOT.jar

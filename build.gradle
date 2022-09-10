@@ -50,10 +50,15 @@ task fatJar(type: Jar) {
     manifest {
         attributes 'Implementation-Title': 'Gradle Uberjar',
         'Implementation-Version': archiveVersion,
-        'Main-Class': 'ru.itmo.sd.shell.ShellKt'
+        'Main-Class': 'ru.crwsh.mse.shell.ShellRunnerKt'
     }
     archivesBaseName = "uber-${project.name}"
-    from { configurations.compileClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+    from {
+        configurations.compileClasspath.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     with jar
 }
 

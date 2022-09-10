@@ -9,8 +9,7 @@ class Env(override var args: List<String>) : Command {
 
     override fun execute(env: MutableMap<String, String>, istream: InputStream, ostream: OutputStream): Int {
         val w = ostream.writer()
-        for (v in env.entries)
-            w.write(v.toString() + "\n")
+        for (v in env.entries) w.write(v.toString() + "\n")
         w.flush()
         ostream.flush()
         return 0

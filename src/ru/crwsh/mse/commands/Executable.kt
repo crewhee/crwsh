@@ -38,7 +38,7 @@ class Executable(override var args: List<String>) : Command {
         }
 
         val process = ProcessBuilder(listOf(binPath) + args.drop(1))
-            .directory(File(env["PWD"]?:"/"))
+            .directory(File(env["PWD"] ?: "/"))
             .redirectInput(ProcessBuilder.Redirect.INHERIT)
             .redirectOutput(ProcessBuilder.Redirect.INHERIT)
             .start()

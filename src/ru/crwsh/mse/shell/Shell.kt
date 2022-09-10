@@ -31,7 +31,6 @@ class Shell(
     }
 
     var publicEnv: Map<String, String> = env
-        get() = field
         private set
 
     fun execute(tokens : MutableList<CrwshToken>) : String {
@@ -77,20 +76,18 @@ class Shell(
 
 
     private fun executeCommand(commandTokens : List<CrwshToken>) : String {
-        if (commandTokens[0] is AssignmentToken) {
-            return assignVariable(commandTokens)
-        }
-        else if (commandTokens.all { it is WordToken }) {
+        return if (commandTokens[0] is AssignmentToken) {
+            assignVariable(commandTokens)
+        } else if (commandTokens.all { it is WordToken }) {
             val cmd = commandFactory.getByName(commandTokens.map {it as WordToken})
             val res = cmd.execute(env, inputStream, outputStream).toString()
             if (outputStream != System.out) {
                 outputStream.close()
             }
-            return res
-        }
-        else {
+            res
+        } else {
             outputWriter.write("crwsh: parse error \n")
-            return "1"
+            "1"
         }
     }
 
@@ -101,7 +98,7 @@ class Shell(
                 outputWriter.write("crwsh: parse error\n")
                 return mutableListOf()
             }
-            outputWriter.write(parser.getStackString() + ">>")
+            outputWriter.write(parser.getStackString() + ">> ")
             outputWriter.flush()
             line = readLine()!!
         }
@@ -110,7 +107,7 @@ class Shell(
 
     fun run() {
         while (true) {
-            outputWriter.write("sh >>")
+            outputWriter.write("sh >> ")
             outputWriter.flush()
             val tokens = getTokensFromStdIn()
             if (tokens.isEmpty())
@@ -121,9 +118,4 @@ class Shell(
             outputWriter.flush()
         }
     }
-}
-
-fun main() {
-    val shell = Shell()
-    shell.run()
 }

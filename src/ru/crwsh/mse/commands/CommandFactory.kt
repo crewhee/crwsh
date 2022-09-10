@@ -4,11 +4,11 @@ import ru.crwsh.mse.parser.tokens.WordToken
 import java.util.stream.Collectors
 
 class CommandFactory {
-    fun getByName(args : List<WordToken>): Command {
+    fun getByName(args: List<WordToken>): Command {
         if (args.isEmpty()) {
             throw RuntimeException("Empty command, this must never happen")
         }
-        val strargs : List<String> = args.stream()
+        val strargs: List<String> = args.stream()
             .map { it -> it.content }
             .collect(Collectors.toList())
         return when (strargs[0]) {

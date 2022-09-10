@@ -4,7 +4,7 @@ import ru.crwsh.mse.parser.tokens.CrwshToken
 import ru.crwsh.mse.parser.tokens.VariableToken
 import ru.crwsh.mse.parser.tokens.WordToken
 
-class VariableExpansion(val env : MutableMap<String, String>) : Expansion {
+class VariableExpansion(val env: MutableMap<String, String>) : Expansion {
     override fun expand(tokens: MutableList<CrwshToken>) {
         for (i in tokens.indices) {
             if (tokens[i] is WordToken) {
