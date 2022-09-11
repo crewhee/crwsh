@@ -24,7 +24,21 @@ class GrepTest {
         grep.execute(mutableMapOf(), System.`in`, ostream)
         ostream.close()
         val res = istream.bufferedReader().lines().toList()
-        assertEquals(res[0], "abc")
-        assertEquals(res[1], "a42")
+        assertEquals("abc", res[0])
+        assertEquals("a42", res[1])
+    }
+
+    @Test
+    fun harderTest() {
+        val grep = Grep(listOf("grep", "-A", "1", "a", path.plus("/grepSimpleFile.txt")))
+        val ostream = PipedOutputStream()
+        val istream = PipedInputStream()
+        istream.connect(ostream)
+        grep.execute(mutableMapOf(), System.`in`, ostream)
+        ostream.close()
+        val res = istream.bufferedReader().lines().toList()
+        assertEquals("abc", res[0])
+        assertEquals("bcd", res[1])
+        assertEquals("a42", res[2])
     }
 }
