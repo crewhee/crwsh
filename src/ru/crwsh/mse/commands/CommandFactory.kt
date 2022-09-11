@@ -9,7 +9,7 @@ class CommandFactory {
             throw RuntimeException("Empty command, this must never happen")
         }
         val strargs: List<String> = args.stream()
-            .map { it -> it.content }
+            .map { it.content }
             .collect(Collectors.toList())
         return when (strargs[0]) {
             "pwd" -> Pwd(strargs)
@@ -20,6 +20,7 @@ class CommandFactory {
             "env" -> Env(strargs)
             "cd" -> Cd(strargs)
             "ls" -> Ls(strargs)
+            "grep" -> Grep(strargs)
             else -> Executable(strargs)
         }
     }

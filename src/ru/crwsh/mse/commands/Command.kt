@@ -15,8 +15,13 @@ interface Command {
         val res = mutableSetOf<String>()
         for (arg in args.drop(1)) {
             if (arg == "-") break
-            if (arg[0] == '-' && arg.length > 1) if (arg[1] == '-') res.add(arg.drop(2))
-            else for (f in arg.drop(1)) res.add(f.toString())
+            if (arg[0] == '-' && arg.length > 1) {
+                if (arg[1] == '-')
+                    res.add(arg.drop(2))
+                else
+                    for (f in arg.drop(1))
+                        res.add(f.toString())
+            }
         }
         return res
     }
