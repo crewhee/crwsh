@@ -1,0 +1,70 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version '1.7.0'
+    id 'java'
+//    id 'jacoco'
+}
+
+group 'ru.crwsh.mse'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib"
+
+    def coroutines_version = '1.6.0'
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:$coroutines_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-debug:$coroutines_version"
+
+    testImplementation(platform("org.junit:junit-bom:5.8.0"))
+    testImplementation("org.junit.jupiter:junit-jupiter")
+}
+
+sourceSets {
+    main {
+        java.srcDirs = ["src"]
+        kotlin.srcDirs = ['src']
+    }
+
+    test {
+        java.srcDirs = ['test']
+        kotlin.srcDirs = ['test']
+        resources.srcDirs = ["resources"]
+    }
+}
+
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
+
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Implementation-Title': 'Gradle Uberjar',
+        'Implementation-Version': archiveVersion,
+        'Main-Class': 'ru.crwsh.mse.shell.ShellRunnerKt'
+    }
+    archivesBaseName = "uber-${project.name}"
+    from {
+        configurations.compileClasspath.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    with jar
+}
+
+jar.finalizedBy fatJar
+
+//test {
+//    useJUnitPlatform()
+//    finalizedBy jacocoTestReport
+//}
